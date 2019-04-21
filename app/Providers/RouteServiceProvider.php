@@ -15,6 +15,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     protected $namespace = 'App\Http\Controllers';
+    protected $apiNamespace = 'App\Http\Controllers\Api';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -67,7 +68,13 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
              ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+             ->namespace($this->apiNamespace)
+             //->group(base_path('routes/api.php'));
+            ->group(function (){
+                //载入路由文件
+                 foreach (glob(app_path('Http/Routes/Api').'/*.php') as $file){
+                    require_once app_path('Http/Routes/Api/').basename($file);
+                 }
+             });
     }
 }
