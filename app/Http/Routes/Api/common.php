@@ -6,9 +6,14 @@
  * Time: 11:56
  */
 
-Route::post('/user/register', 'UserController@register');
-Route::post('/user/login', 'UserController@login');
 
+
+Route::group(['prefix' => 'user'], function (){
+    Route::post('register', 'UserController@register');
+    Route::post('login', 'UserController@login');
+    Route::get('loginout', 'UserController@loginOut');
+    Route::get('refresh', 'UserController@refresh');
+});
 
 Route::group(['middleware' => 'auth:api'], function (){
     Route::get('/user', 'UserController@store');

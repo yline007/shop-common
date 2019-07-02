@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
     public function store(Request $request)
     {
         try{
@@ -23,7 +24,6 @@ class UserController extends Controller
     public function register(Request $request)
     {
         try{
-
             $rule = [
                 'user_mobile'    => 'required|unique:users,user_mobile',
                 'user_password'    => 'required',
@@ -60,5 +60,16 @@ class UserController extends Controller
         return $this->success($data);
     }
 
+    public function loginOut()
+    {
+        auth('api')->logout();
+        return $this->success('退出成功');
+    }
+
+    public function refresh()
+    {
+        $refresh_token = auth('api')->refresh();
+        return $this->success(['refresh_token' => $refresh_token]);
+    }
 
 }
